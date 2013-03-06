@@ -5,8 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.mineGeek.Areas.Events.AreaListeners;
-import com.github.mineGeek.Areas.Main.Registry;
+import com.github.mineGeek.Areas.Events.AreasListeners;
+import com.github.mineGeek.Areas.Main.AreasRegistry;
 import com.github.mineGeek.Areas.Structs.Reset;
 import com.github.mineGeek.Areas.Structs.Area.PVPMode;
 import com.github.mineGeek.Reset.Events.Listeners;
@@ -17,7 +17,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		
-		Registry.close();
+		AreasRegistry.close();
 	}
 	
 	@Override
@@ -30,20 +30,20 @@ public class Main extends JavaPlugin {
 		reset1.area.setNE(ne1);
 		reset1.area.setSW(sw1);
 		reset1.area.pvpMode = PVPMode.ON;
-		Registry.resets.addReset( reset1 );
+		AreasRegistry.resets.addReset( reset1 );
 		
     	/**
     	 * Listeners
     	 */
 		this.getServer().getPluginManager().registerEvents( new Listeners(), this);
-    	this.getServer().getPluginManager().registerEvents( new AreaListeners(), this);
+    	this.getServer().getPluginManager().registerEvents( new AreasListeners(), this);
     	
     	
     	//Make some new zones for testing.
     	
 		
 		for( Player p : getServer().getOnlinePlayers() ) {
-			Registry.updatePlayerMove(p);
+			AreasRegistry.updatePlayerMove(p);
 		}
 	}
 	
