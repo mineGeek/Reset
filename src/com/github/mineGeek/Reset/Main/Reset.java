@@ -1,7 +1,6 @@
 package com.github.mineGeek.Reset.Main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -13,8 +12,9 @@ import com.github.mineGeek.Areas.Events.AreasListeners;
 import com.github.mineGeek.Areas.Main.AreasRegistry;
 import com.github.mineGeek.Areas.Structs.Area.PVPMode;
 import com.github.mineGeek.Reset.Actions.MessageCountdown;
+import com.github.mineGeek.Reset.Actions.ResetItem;
 import com.github.mineGeek.Reset.Events.Listeners;
-import com.github.mineGeek.Reset.Structs.ResetItem;
+import com.github.mineGeek.Timers.Main.TimersRegistry;
 
 
 public class Reset extends JavaPlugin {
@@ -45,19 +45,27 @@ public class Reset extends JavaPlugin {
 		plugin = this;
 		registry = new ResetRegistry();
 		
-		Location ne1 = new Location( Bukkit.getWorld("yeppers pepps"), 923, 4, -1674);
-		Location sw1 = new Location( Bukkit.getWorld("yeppers pepps"), 895, 10, -1702 );
+		Location ne1 = new Location( Bukkit.getWorld("pickleMasherD"), 923, 4, -1674);
+		Location sw1 = new Location( Bukkit.getWorld("pickleMasherD"), 895, 10, -1702 );
 		
 		ResetItem reset1 = new ResetItem("ted");
 		reset1.area.setNE(ne1);
 		reset1.area.setSW(sw1);
 		reset1.area.pvpMode = PVPMode.ON;
 		AreasRegistry.areaHandler = getRegistry();
+		TimersRegistry.plugin = this;
+		
 		
 		List<String> list = new ArrayList<String>();
 		list.add( "1s"); list.add( "2s" ); list.add("3s"); list.add("4s"); list.add("5s");
 		MessageCountdown m = new MessageCountdown( list, "hi there %s");
+		
 		reset1.postActions.add( m );
+		reset1.secondsLong = 15;
+		
+
+		//reset1.timer.start = 0;
+		//reset1.timer.end = 15;
 		
 		//AreasRegistry.resets.addReset( reset1 );
 		
@@ -74,6 +82,9 @@ public class Reset extends JavaPlugin {
 		for( Player p : getServer().getOnlinePlayers() ) {
 			AreasRegistry.updatePlayerMove(p);
 		}
+		
+		reset1.ini();
+		reset1.start();
 		
 
 	}

@@ -11,15 +11,15 @@ import org.bukkit.entity.Player;
 import com.github.mineGeek.Areas.Structs.Area;
 import com.github.mineGeek.Areas.Structs.AreaChunks;
 import com.github.mineGeek.Areas.Structs.IAreaEventsHandler;
+import com.github.mineGeek.Reset.Actions.ResetItem;
 import com.github.mineGeek.Reset.Structs.MessageItem;
-import com.github.mineGeek.Reset.Structs.ResetItem;
 import com.github.mineGeek.Timers.Structs.ITimer;
 import com.github.mineGeek.Timers.Structs.Timer;
 
 public class ResetRegistry implements IAreaEventsHandler {
 
 	public enum Scope { AREA, SURROUND, WORLD, SERVER, NONE };
-	public static Map<String, Timer> timers = new WeakHashMap<String, Timer>();
+	public static Map<ResetItem, Timer> timers = new WeakHashMap<ResetItem, Timer>();
 	AreaChunks areaChunks = new AreaChunks();
 	public Map<String, ResetItem> resets = new WeakHashMap<String, ResetItem>();	
 	
@@ -31,6 +31,8 @@ public class ResetRegistry implements IAreaEventsHandler {
 		for ( MessageItem item : items ) { broadCastMessageItem( item, args ); }
 	}
 	
+
+	
 	public void clearTimer( String tag ) {
 		
 		if ( timers.containsKey( tag ) ) {
@@ -40,29 +42,17 @@ public class ResetRegistry implements IAreaEventsHandler {
 		
 	}
 	
-	public void addTimer( String tag ) {
+	public void addTimer( String tag, Timer timer ) {
 		
-		Timer timer = null;
-		if ( timers.containsKey( tag ) ) {
-			timer = timers.get( tag );
-		} else {
-			timer = new Timer();
-			timers.put( tag, timer );
-		}
+		timers.put( resets.get( tag ), timer );
 		
 	}
 	
-	public void addToTimer( String tag, ITimer action ) {
+	public void addToTimer( String tag, ITimer action ) { addToTimer( resets.get(tag), action ); }
+	
+	public void addToTimer( ResetItem reset, ITimer action ) {
 		
-		Timer timer = null;
-		if ( timers.containsKey( tag ) ) {
-			timer = timers.get( tag );
-		} else {
-			timer = new Timer();
-			timers.put( tag, timer );
-		}
-		
-		timer.timerItems.add( action );
+		timers.get( reset ).addTimer( action );
 		
 	}
 	
@@ -125,9 +115,7 @@ public class ResetRegistry implements IAreaEventsHandler {
 	}	
 	
 	public void close() {
-		//areaChunks.close();
-		//resets.clear();		
-		for( String x : timers.keySet() ) stopTimer( x );
+
 		for( Timer t : timers.values() ) t.timerItems.clear();
 		timers.clear();
 	}

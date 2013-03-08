@@ -3,7 +3,11 @@ package com.github.mineGeek.Reset.Actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+
 import com.github.mineGeek.Reset.Actions.Message.MessageEvent;
+import com.github.mineGeek.Reset.Events.TimerEventStart;
+import com.github.mineGeek.Reset.Events.TimerEventStop;
 import com.github.mineGeek.Reset.Main.Utilities;
 import com.github.mineGeek.Reset.Main.ResetRegistry.Scope;
 import com.github.mineGeek.Timers.Structs.ITimer;
@@ -30,13 +34,25 @@ public class MessageCountdown extends ActionBase {
 			
 			for( Integer x : schedule ) {
 				Message m = new Message();
-				m.start = x;
+				m.secondsDelay = x;
 				m.addMessage( MessageEvent.END, scope, message );
-				messages.add( m );
+				this.postActions.add( m );
 			}
 			
 		}
 		
+	}
+	
+	@Override
+	public void ini() {
+		queueMessages();
+		super.ini();
+		this.timer.endHandler = new TimerEventStart( this );
+	}
+	
+	@Override
+	public void start() {
+		Bukkit.broadcastMessage("poop");
 	}
 	
 	public void clear() {
@@ -50,10 +66,18 @@ public class MessageCountdown extends ActionBase {
 		scheduleText = list;
 		schedule = Utilities.getSecondsFromText(list);
 	}
-	
+
 	@Override
 	public void close() {
-		clear();
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 }

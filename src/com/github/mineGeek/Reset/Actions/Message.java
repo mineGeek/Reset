@@ -34,39 +34,16 @@ public class Message extends ActionBase {
 		if ( messages.containsKey( event ) ) Reset.getRegistry().broadCastMessageItems( messages.get( event), args );
 	}
 	
-	@Override	
-	public void ding( Object args[] ) {
-		broadCast( MessageEvent.INCRIMENT, args );
-	}
-	
-	@Override
-	public void start( Object args[] ) {
-		broadCast( MessageEvent.START, args );
-	}
-	
-	@Override
-	public void end( Object args[] ) {
-		broadCast( MessageEvent.END, args );
-	}
-	
-	@Override
-	public void reset( Object args[] ) {
-		broadCast( MessageEvent.RESET, args );
-	}
-	
-	@Override
-	public void paused( Object args[] ) {
-		broadCast( MessageEvent.PAUSE, args );
-	}
-	
-	@Override
-	public void resume( Object args[] ) {
-		broadCast( MessageEvent.RESUME, args );
-	}	
-	
 	public void close() {
 		clear();
 	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 

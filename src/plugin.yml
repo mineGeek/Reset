@@ -1,5 +1,5 @@
 name: ZoneReset
-main: com.github.mineGeek.Reset.Main.Main
+main: com.github.mineGeek.Reset.Main.Reset
 version: 1.0.0
 commands:
     reset:

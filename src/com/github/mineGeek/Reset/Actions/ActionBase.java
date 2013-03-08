@@ -1,53 +1,56 @@
 package com.github.mineGeek.Reset.Actions;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.github.mineGeek.Areas.Structs.Area;
+import com.github.mineGeek.Reset.Structs.ActionTimerEvent;
 import com.github.mineGeek.Reset.Structs.IAction;
-import com.github.mineGeek.Timers.Structs.ITimer;
+import com.github.mineGeek.Timers.Structs.Timer2;
 
-abstract class ActionBase implements Runnable, ITimer, IAction {
+abstract class ActionBase implements IAction {
 
-	public Integer start 	= null;
-	public Integer interval = null;
-	public Integer end 		= null;
+	public Integer 	secondsDelay 	= null;
+	public Integer 	secondsInto 	= null;
+	public Integer 	secondsRepeat	= null;
+	public Integer 	secondsLong		= null;
+	public Long 	lastStartTime	= null;
 	
-	public void run() {}
 	
-	public List<ITimer> getTimerItems() { return null; }
+	public Area area = new Area();
+	public List<IAction> preActions = new ArrayList<IAction>();
+	public List<IAction> postActions = new ArrayList<IAction>();	
 	
-	public Integer getStart() { return null; }
-
-	public Integer getInterval() { return null;	}
-
-	public Integer getEnd() { return null; }
-
-	public Integer getTaskId() { return null; }
-
-	public Integer getEndTaskId() { return null; }
-
-	public Long getLastStartTime() { return null; }
-
-	public boolean isRunning() { return false; }
-
-	public void setTaskId(Integer taskId) {}
-
-	public void setEndTaskId(Integer taskId) {}
-
-	public void setTimerStart(Long start) {}
-
-	public void setTimerEnd(Long end) {}
-
-	public void ding(Object[] args) {}
-
-	public void start(Object[] args) {}
-
-	public void end(Object[] args) {}
-
-	public void reset(Object[] args) {}
-
-	public void paused(Object[] args) {}
-
-	public void resume(Object[] args) {}
+	public ActionTimerEvent handler = new ActionTimerEvent( this );
+	public Timer2 timer = new Timer2( handler );
 	
-	public void close() {}
+	
+	public List<IAction> preActions() { return this.preActions;	}
+	
+	public List<IAction> postActions() { return this.postActions; }
+	
+	public void start() {
+		for ( IAction a : preActions ) a.start();
+		this.timer.start();
+		for ( IAction a : postActions ) a.start();
+		
+	}
+	
+	public void stop() {
+		this.timer.stop();
+	}	
+	
+	public void ini() {
+		
+		timer.secondsDelay 	= secondsDelay;
+		timer.secondsInto 	= secondsInto;
+		timer.secondsLong 	= secondsLong;
+		timer.secondsRepeat = secondsRepeat;
+		
+		for ( IAction a : preActions ) a.ini();
+		for ( IAction a : postActions) a.ini();
+		
+	}
+	
+
 }
