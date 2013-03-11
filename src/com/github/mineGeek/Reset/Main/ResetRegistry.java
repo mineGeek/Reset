@@ -6,70 +6,51 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.github.mineGeek.Areas.Structs.Area;
 import com.github.mineGeek.Areas.Structs.AreaChunks;
 import com.github.mineGeek.Areas.Structs.IAreaEventsHandler;
+
+
 import com.github.mineGeek.Reset.Actions.ResetItem;
 import com.github.mineGeek.Reset.Structs.MessageItem;
-import com.github.mineGeek.Timers.Structs.ITimer;
-import com.github.mineGeek.Timers.Structs.Timer;
 
 public class ResetRegistry implements IAreaEventsHandler {
 
 	public enum Scope { AREA, SURROUND, WORLD, SERVER, NONE };
-	public static Map<ResetItem, Timer> timers = new WeakHashMap<ResetItem, Timer>();
-	AreaChunks areaChunks = new AreaChunks();
-	public Map<String, ResetItem> resets = new WeakHashMap<String, ResetItem>();	
+	public static Set<ResetItem> resets;
+	public static Map< String, ResetItem > tagged = new WeakHashMap< String, ResetItem >();
+	AreaChunks areaChunks = new AreaChunks();	
 	
 	public void broadCastMessageItem( MessageItem item, Object[] args ) {
-		
+		Bukkit.broadcastMessage( String.format( item.message, args) );
 	}
 	
 	public void broadCastMessageItems( List<MessageItem> items, Object[] args ) {
 		for ( MessageItem item : items ) { broadCastMessageItem( item, args ); }
+		
 	}
 	
-
-	
-	public void clearTimer( String tag ) {
+	public void clearReset( String tag ) {
 		
-		if ( timers.containsKey( tag ) ) {
-			timers.get( tag ).stop();
-			timers.get( tag ).close();
+		if ( tagged.containsKey( tag ) ) {
+			tagged.get( tag ).stop();
+			tagged.get( tag ).close();
 		}
 		
 	}
-	
-	public void addTimer( String tag, Timer timer ) {
 		
-		timers.put( resets.get( tag ), timer );
+	public void startReset( String tag ) {
 		
-	}
-	
-	public void addToTimer( String tag, ITimer action ) { addToTimer( resets.get(tag), action ); }
-	
-	public void addToTimer( ResetItem reset, ITimer action ) {
-		
-		timers.get( reset ).addTimer( action );
+		if ( tagged.containsKey( tag ) ) tagged.get( tag ).start();
 		
 	}
 	
-	public void startTimer( String tag ) {
+	public void stopReset( String tag ) {
 		
-		Timer t = null;
-		if ( timers.containsKey( tag ) ) t = timers.get( tag );
-		if ( t == null ) return;
-		t.start();		
-		
-	}
-	
-	public void stopTimer( String tag ) {
-		Timer t = null;
-		if ( timers.containsKey( tag ) ) t = timers.get( tag );
-		if ( t == null ) return;
-		t.stop();			
+		if ( tagged.containsKey( tag ) ) tagged.get( tag ).stop();
 	}
 	
 	public void addReset( ResetItem reset ) {
@@ -106,18 +87,18 @@ public class ResetRegistry implements IAreaEventsHandler {
 	}
 	
 	public void removeReset( ResetItem reset ) {
-		
-		
 		Area area = reset.area;
 		areaChunks.remove( area );
-		if ( resets.containsKey( reset.tag ) ) resets.remove( reset.tag );
+		if ( tagged.containsKey( reset.tag ) ) resets.remove( reset.tag );
+		resets.remove( reset );
 		
 	}	
 	
 	public void close() {
 
-		for( Timer t : timers.values() ) t.timerItems.clear();
-		timers.clear();
+		for ( ResetItem r : tagged.values() ) r.close();
+		if ( resets != null ) resets.clear();
+		if ( tagged != null) tagged.clear();
 	}
 
 	

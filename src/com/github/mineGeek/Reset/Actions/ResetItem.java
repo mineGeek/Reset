@@ -2,46 +2,80 @@ package com.github.mineGeek.Reset.Actions;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 
 import com.github.mineGeek.Areas.Structs.Area;
 import com.github.mineGeek.Reset.Events.TimerEventStart;
-import com.github.mineGeek.Reset.Events.TimerEventStop;
+import com.github.mineGeek.Reset.Events.TimerEventsComplete;
+import com.github.mineGeek.Reset.Structs.IAction;
+import com.github.mineGeek.Timers.Structs.TimerCollection;
 
+public class ResetItem extends TimerCollection implements IAction {
 
-
-public class ResetItem extends ActionBase {
-
-	public String tag = null;
-	public Area area = new Area();
+	public String 	tag = null;
+	public Area 	area = new Area();
+	
+	public List<IAction> preActions = new ArrayList<IAction>();
+	public List<IAction> postActions = new ArrayList<IAction>();	
 	
 	public ResetItem( String tag ) { 
 		this.tag = tag;
 	}
 	
+	public void addPreAction( IAction action ) {
+		
+		action.setClock( this );
+		preActions.add( action );
+		
+	}
+	
+	public void addPostAction( IAction action ) { 
+		action.setClock( this );
+		postActions.add( action );
+	}
+	
 	@Override
 	public void ini() {
 		super.ini();
-		this.timer.startHandler = new TimerEventStart( this );
-		this.timer.endHandler = new TimerEventStop( this );
+		this.clock.handlerComplete 	= new TimerEventsComplete( this );
+		this.clock.handlerStart 	= new TimerEventStart( this );
+		for( IAction a : preActions ) a.ini();
+		for (IAction a : postActions ) a.ini();
 	}
 	
-	@Override
-	public void stop() {
+	public void complete( Object[] args ) {
+		for ( IAction a : preActions ) a.start(args);
 		super.stop();
 		Bukkit.broadcastMessage("resetting...................................");
 		start();
-	}
-	
-	public void close() {
-
+		for ( IAction a : postActions ) a.complete(args);
+		
 	}
 
 	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void start(Object[] args) {}
+
+	@Override
+	public void stop(Object[] args) {}
+
+	@Override
+	public void incriment(Object[] args) {}
+
+	@Override
+	public List<IAction> preActions() { return null; }
+
+	@Override
+	public List<IAction> postActions() { return null; }
+
+	@Override
+	public TimerCollection getClock() { return null; }
+
+	@Override
+	public void setClock(TimerCollection clock) {}
+
 
 
 

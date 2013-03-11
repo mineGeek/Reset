@@ -10,7 +10,7 @@ public class TimerEventStart extends TimerEvent {
 	
 	@Override
 	public void run() {
-		if ( parent != null) parent.start();
+		if ( parent != null) parent.start( this.getTimeArgs() );
 	}
 	
 }

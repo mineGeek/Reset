@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+
 import com.github.mineGeek.Areas.Events.AreasListeners;
 import com.github.mineGeek.Areas.Main.AreasRegistry;
 import com.github.mineGeek.Areas.Structs.Area.PVPMode;
@@ -41,12 +42,12 @@ public class Reset extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		
+
 		plugin = this;
 		registry = new ResetRegistry();
 		
-		Location ne1 = new Location( Bukkit.getWorld("pickleMasherD"), 923, 4, -1674);
-		Location sw1 = new Location( Bukkit.getWorld("pickleMasherD"), 895, 10, -1702 );
+		Location ne1 = new Location( Bukkit.getWorld("yeppers pepps"), 923, 4, -1674);
+		Location sw1 = new Location( Bukkit.getWorld("yeppers pepps"), 895, 10, -1702 );
 		
 		ResetItem reset1 = new ResetItem("ted");
 		reset1.area.setNE(ne1);
@@ -56,12 +57,17 @@ public class Reset extends JavaPlugin {
 		TimersRegistry.plugin = this;
 		
 		
+		
+		reset1.length = 15;
+				
+		
 		List<String> list = new ArrayList<String>();
 		list.add( "1s"); list.add( "2s" ); list.add("3s"); list.add("4s"); list.add("5s");
-		MessageCountdown m = new MessageCountdown( list, "hi there %s");
-		
-		reset1.postActions.add( m );
-		reset1.secondsLong = 15;
+		list.add( "10s"); list.add( "11s" ); list.add("12s"); list.add("13s"); list.add("14s");
+		MessageCountdown m = new MessageCountdown( list, "hi there 1- %1$s 2- %2$s 3- %3$s");
+
+		reset1.addPostAction( m );
+
 		
 
 		//reset1.timer.start = 0;

@@ -3,12 +3,12 @@ package com.github.mineGeek.Reset.Events;
 import com.github.mineGeek.Reset.Structs.IAction;
 import com.github.mineGeek.Timers.Structs.TimerEvent;
 
-public class TimerEventStop extends TimerEvent {
+public class TimerEventsComplete extends TimerEvent {
 	public IAction parent;
-	public TimerEventStop( IAction parent ) { this.parent = parent; }
+	public TimerEventsComplete( IAction parent ) { this.parent = parent; }
 	
 	@Override
 	public void run() {
-		if ( parent!= null) parent.stop( this.getTimeArgs() );
+		if ( parent!= null) parent.complete( this.getTimeArgs() );
 	}
 }

@@ -1,7 +1,5 @@
 package com.github.mineGeek.Reset.Structs;
 
-import org.bukkit.Bukkit;
-
 import com.github.mineGeek.Timers.Structs.ITimer;
 
 public class ActionTimerEvent implements ITimer, Runnable {
@@ -72,17 +70,7 @@ public class ActionTimerEvent implements ITimer, Runnable {
 		
 	}
 
-	@Override
-	public void setTimerStart(Long start) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void setTimerEnd(Long end) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void ding(Object[] args) {
@@ -90,36 +78,22 @@ public class ActionTimerEvent implements ITimer, Runnable {
 		
 	}
 
-	@Override
-	public void preStart(Object[] args) {
-		for( IAction a : parent.preActions() ) { a.run(); }
-	}
+
 
 	@Override
-	public void start(Object[] args) {
-		Bukkit.broadcastMessage("Resetting you....");		
-	}
-
-	@Override
-	public void postStart(Object[] args) {
-		for( IAction a : parent.postActions() ) { a.run(); }
-		
-	}
-
-	@Override
-	public void preEnd(Object[] args) {
+	public void preStop(Object[] args) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void end(Object[] args) {
+	public void stop(Object[] args) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void postEnd(Object[] args) {
+	public void postStop(Object[] args) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -144,6 +118,50 @@ public class ActionTimerEvent implements ITimer, Runnable {
 
 	@Override
 	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void setTotalSeconds(Integer totalSeconds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTimerStart(Integer start) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTimerComplete(Integer complete) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTimerInterval(Integer interval) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void preStart(Object[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void start(Object[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postStart(Object[] args) {
 		// TODO Auto-generated method stub
 		
 	}

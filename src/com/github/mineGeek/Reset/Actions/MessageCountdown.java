@@ -3,19 +3,16 @@ package com.github.mineGeek.Reset.Actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 
 import com.github.mineGeek.Reset.Actions.Message.MessageEvent;
-import com.github.mineGeek.Reset.Events.TimerEventStart;
-import com.github.mineGeek.Reset.Events.TimerEventStop;
 import com.github.mineGeek.Reset.Main.Utilities;
 import com.github.mineGeek.Reset.Main.ResetRegistry.Scope;
 import com.github.mineGeek.Timers.Structs.ITimer;
 
 public class MessageCountdown extends ActionBase {
 
-	public List< String > 	scheduleText 	= new ArrayList< String >();
-	public List< Integer > 	schedule 		= new ArrayList< Integer >();
+	public List<String> 	scheduleText 	= new ArrayList< String >();
+	public List<Integer> 	schedule 		= new ArrayList< Integer >();
 	public List<ITimer> 	messages 		= new ArrayList< ITimer >();
 	public String message = null;
 	public Scope scope = Scope.AREA;
@@ -24,8 +21,6 @@ public class MessageCountdown extends ActionBase {
 		clear();
 		setSchedule( timer );
 		this.message = message;
-		queueMessages();
-
 	}
 	
 	public void queueMessages() {
@@ -34,26 +29,27 @@ public class MessageCountdown extends ActionBase {
 			
 			for( Integer x : schedule ) {
 				Message m = new Message();
-				m.secondsDelay = x;
-				m.addMessage( MessageEvent.END, scope, message );
-				this.postActions.add( m );
+				m.secondStart = x;
+				m.addMessage( MessageEvent.START, scope, message );
+				this.addPostAction( m );
+				
+				
 			}
 			
 		}
 		
 	}
 	
+	
+	//public void addPreAction( IAction action) { action.setClock( this ); super.addPreAction(action);}
+	
 	@Override
 	public void ini() {
 		queueMessages();
 		super.ini();
-		this.timer.endHandler = new TimerEventStart( this );
+		//this.timer.completeHandler = new TimerEventsComplete( this );
 	}
 	
-	@Override
-	public void start() {
-		Bukkit.broadcastMessage("poop");
-	}
 	
 	public void clear() {
 		if ( !messages.isEmpty() ) for ( ITimer m : messages )  (( Message )m).close();
@@ -69,15 +65,11 @@ public class MessageCountdown extends ActionBase {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+
 	
 	
 }
