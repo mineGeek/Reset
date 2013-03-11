@@ -4,28 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mineGeek.Reset.Structs.IAction;
-import com.github.mineGeek.Timers.Structs.SubTimer;
-import com.github.mineGeek.Timers.Structs.TimerCollection;
+import com.github.mineGeek.Timers.Events.ITimerEventHandler;
+import com.github.mineGeek.Timers.Structs.Timer;
+import com.github.mineGeek.Timers.Structs.Timers;
 
-abstract class ActionBase implements IAction {
+abstract class ActionBase implements IAction, ITimerEventHandler {
 
 	public Integer 	secondStart 	= null;
 	public Integer 	secondInterval 	= null;
 	public Integer 	secondComplete	= null;	
 	
-	public TimerCollection clock	= null;
+	public Timers clock	= null;
+	public Timer timer = null;
 	
 	public IAction		parent	= null;
 	public List<IAction> preActions = new ArrayList<IAction>();
 	public List<IAction> postActions = new ArrayList<IAction>();
 	
-	public SubTimer timer = null;
+	
 	
 	public List<IAction> preActions() { return this.preActions;	}	
 	public List<IAction> postActions() { return this.postActions; }
 	
-	public void setClock( TimerCollection clock ) { this.clock = clock; }
-	public TimerCollection getClock() { return this.clock; }
+	public void setClock( Timers clock ) { this.clock = clock; }
+	public Timers getClock() { return this.clock; }
 	
 	public void addPreAction( IAction action ) {
 		action.setClock(clock);

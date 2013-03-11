@@ -10,7 +10,7 @@ import com.github.mineGeek.Reset.Events.TimerEventsComplete;
 import com.github.mineGeek.Reset.Main.Reset;
 import com.github.mineGeek.Reset.Main.ResetRegistry.Scope;
 import com.github.mineGeek.Reset.Structs.MessageItem;
-import com.github.mineGeek.Timers.Structs.SubTimer;
+import com.github.mineGeek.Timers.Structs.Timer;
 
 
 public class Message extends ActionBase {
@@ -42,14 +42,17 @@ public class Message extends ActionBase {
 	public void ini() {
 		
 		if ( this.secondComplete != null || this.secondInterval != null || this.secondStart != null ) {
-			super.timer = new SubTimer();
+			
+			super.timer = new Timer();
 			super.timer.secondStart = this.secondStart;
 			super.timer.secondInterval = this.secondInterval;
 			super.timer.secondStop = this.secondComplete;
+			if ( messages.containsKey( MessageEvent.START ) && this.secondStart != null ) 		this.timer.eventHandler.start = new TimerEventStart( this );
+			if ( messages.containsKey( MessageEvent.COMPLETE ) && this.secondComplete != null )	this.timer.eventHandler.complete = new TimerEventsComplete( this );			
 			super.getClock().addSubTimer( super.timer );
 			super.ini();
-			if ( messages.containsKey( MessageEvent.START ) && this.secondStart != null ) 		this.timer.handlerStart = new TimerEventStart( this );
-			if ( messages.containsKey( MessageEvent.COMPLETE ) && this.secondComplete != null )	this.timer.handlerComplete = new TimerEventsComplete( this );			
+			
+			
 		} else {		
 			super.ini();
 		}
@@ -65,7 +68,10 @@ public class Message extends ActionBase {
 	@Override
 	public void start( Object[] args ) {
 		//super.start(args);
-		if ( messages.containsKey( MessageEvent.START ) ) Reset.getRegistry().broadCastMessageItems( messages.get( MessageEvent.START), args);
+		if ( messages.containsKey( MessageEvent.START ) ) {
+			List<MessageItem> m = messages.get( MessageEvent.START );
+			Reset.getRegistry().broadCastMessageItems( m, args);
+		}
 	}
 	
 	@Override
@@ -77,6 +83,7 @@ public class Message extends ActionBase {
 		super.close();
 		clear();
 	}
+
 
 
 }

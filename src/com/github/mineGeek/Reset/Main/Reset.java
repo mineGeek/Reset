@@ -35,7 +35,8 @@ public class Reset extends JavaPlugin {
 	public void onDisable() {
 		
 		AreasRegistry.close();
-		registry.close();
+		TimersRegistry.close();
+		registry.close();		
 		registry = null;
 		plugin = null;
 	}
@@ -46,15 +47,18 @@ public class Reset extends JavaPlugin {
 		plugin = this;
 		registry = new ResetRegistry();
 		
-		Location ne1 = new Location( Bukkit.getWorld("yeppers pepps"), 923, 4, -1674);
-		Location sw1 = new Location( Bukkit.getWorld("yeppers pepps"), 895, 10, -1702 );
+		Location ne1 = new Location( Bukkit.getWorld("pickleMasherD"), 923, 4, -1674);
+		Location sw1 = new Location( Bukkit.getWorld("pickleMasherD"), 895, 10, -1702 );
+		
+		AreasRegistry.areaHandler = getRegistry();
+		TimersRegistry.plugin = this;
+		TimersRegistry.persistTimerData = true;		
 		
 		ResetItem reset1 = new ResetItem("ted");
 		reset1.area.setNE(ne1);
 		reset1.area.setSW(sw1);
 		reset1.area.pvpMode = PVPMode.ON;
-		AreasRegistry.areaHandler = getRegistry();
-		TimersRegistry.plugin = this;
+
 		
 		
 		

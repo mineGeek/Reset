@@ -11,19 +11,21 @@ import com.github.mineGeek.Areas.Structs.Area;
 import com.github.mineGeek.Reset.Events.TimerEventStart;
 import com.github.mineGeek.Reset.Events.TimerEventsComplete;
 import com.github.mineGeek.Reset.Structs.IAction;
-import com.github.mineGeek.Timers.Structs.TimerCollection;
+import com.github.mineGeek.Timers.Structs.Timers;
 
-public class ResetItem extends TimerCollection implements IAction {
+public class ResetItem extends Timers implements IAction {
+
+
 
 	public String 	tag = null;
 	public Area 	area = new Area();
 	
 	public List<IAction> preActions = new ArrayList<IAction>();
-	public List<IAction> postActions = new ArrayList<IAction>();	
+	public List<IAction> postActions = new ArrayList<IAction>();
 	
-	public ResetItem( String tag ) { 
-		this.tag = tag;
-	}
+	public ResetItem(String tag) {
+		super(tag);
+	}	
 	
 	public void addPreAction( IAction action ) {
 		
@@ -40,8 +42,8 @@ public class ResetItem extends TimerCollection implements IAction {
 	@Override
 	public void ini() {
 		super.ini();
-		this.clock.handlerComplete 	= new TimerEventsComplete( this );
-		this.clock.handlerStart 	= new TimerEventStart( this );
+		this.clock.eventHandler.complete 	= new TimerEventsComplete( this );
+		this.clock.eventHandler.start		= new TimerEventStart( this );
 		for( IAction a : preActions ) a.ini();
 		for (IAction a : postActions ) a.ini();
 	}
@@ -71,10 +73,10 @@ public class ResetItem extends TimerCollection implements IAction {
 	public List<IAction> postActions() { return null; }
 
 	@Override
-	public TimerCollection getClock() { return null; }
+	public Timers getClock() { return null; }
 
 	@Override
-	public void setClock(TimerCollection clock) {}
+	public void setClock(Timers clock) {}
 
 
 

@@ -7,13 +7,12 @@ import java.util.List;
 import com.github.mineGeek.Reset.Actions.Message.MessageEvent;
 import com.github.mineGeek.Reset.Main.Utilities;
 import com.github.mineGeek.Reset.Main.ResetRegistry.Scope;
-import com.github.mineGeek.Timers.Structs.ITimer;
 
 public class MessageCountdown extends ActionBase {
 
 	public List<String> 	scheduleText 	= new ArrayList< String >();
 	public List<Integer> 	schedule 		= new ArrayList< Integer >();
-	public List<ITimer> 	messages 		= new ArrayList< ITimer >();
+	public List<Message> 	messages 		= new ArrayList< Message >();
 	public String message = null;
 	public Scope scope = Scope.AREA;
 	
@@ -52,7 +51,7 @@ public class MessageCountdown extends ActionBase {
 	
 	
 	public void clear() {
-		if ( !messages.isEmpty() ) for ( ITimer m : messages )  (( Message )m).close();
+		if ( !messages.isEmpty() ) for ( Message m : messages )  m.close();
 		messages.clear();
 		schedule.clear();
 		scheduleText.clear();
