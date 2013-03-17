@@ -14,14 +14,14 @@ import com.github.mineGeek.Areas.Structs.AreaChunks;
 import com.github.mineGeek.Areas.Structs.IAreaEventsHandler;
 
 
-import com.github.mineGeek.Reset.Actions.ResetItem;
+import com.github.mineGeek.Reset.Actions.RepeatingResetAction;
 import com.github.mineGeek.Reset.Structs.MessageItem;
 
 public class ResetRegistry implements IAreaEventsHandler {
 
 	public enum Scope { AREA, SURROUND, WORLD, SERVER, NONE };
-	public static Set<ResetItem> resets;
-	public static Map< String, ResetItem > tagged = new WeakHashMap< String, ResetItem >();
+	public static Set<RepeatingResetAction> resets;
+	public static Map< String, RepeatingResetAction > tagged = new WeakHashMap< String, RepeatingResetAction >();
 	AreaChunks areaChunks = new AreaChunks();	
 	
 	public void broadCastMessageItem( MessageItem item, Object[] args ) {
@@ -53,7 +53,7 @@ public class ResetRegistry implements IAreaEventsHandler {
 		if ( tagged.containsKey( tag ) ) tagged.get( tag ).stop();
 	}
 	
-	public void addReset( ResetItem reset ) {
+	public void addReset( RepeatingResetAction reset ) {
 		
 		removeReset( reset );
 		areaChunks.add( reset.area );
@@ -86,7 +86,7 @@ public class ResetRegistry implements IAreaEventsHandler {
 		
 	}
 	
-	public void removeReset( ResetItem reset ) {
+	public void removeReset( RepeatingResetAction reset ) {
 		Area area = reset.area;
 		areaChunks.remove( area );
 		if ( tagged.containsKey( reset.tag ) ) resets.remove( reset.tag );
@@ -96,7 +96,7 @@ public class ResetRegistry implements IAreaEventsHandler {
 	
 	public void close() {
 
-		for ( ResetItem r : tagged.values() ) r.close();
+		for ( RepeatingResetAction r : tagged.values() ) r.close();
 		if ( resets != null ) resets.clear();
 		if ( tagged != null) tagged.clear();
 	}

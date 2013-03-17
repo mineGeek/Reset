@@ -13,7 +13,7 @@ import com.github.mineGeek.Areas.Events.AreasListeners;
 import com.github.mineGeek.Areas.Main.AreasRegistry;
 import com.github.mineGeek.Areas.Structs.Area.PVPMode;
 import com.github.mineGeek.Reset.Actions.MessageCountdown;
-import com.github.mineGeek.Reset.Actions.ResetItem;
+import com.github.mineGeek.Reset.Actions.RepeatingResetAction;
 import com.github.mineGeek.Reset.Events.Listeners;
 import com.github.mineGeek.Timers.Main.TimersRegistry;
 
@@ -47,14 +47,14 @@ public class Reset extends JavaPlugin {
 		plugin = this;
 		registry = new ResetRegistry();
 		
-		Location ne1 = new Location( Bukkit.getWorld("pickleMasherD"), 923, 4, -1674);
-		Location sw1 = new Location( Bukkit.getWorld("pickleMasherD"), 895, 10, -1702 );
+		Location ne1 = new Location( Bukkit.getWorld("yeppers pepps"), 923, 4, -1674);
+		Location sw1 = new Location( Bukkit.getWorld("yeppers pepps"), 895, 10, -1702 );
 		
 		AreasRegistry.areaHandler = getRegistry();
 		TimersRegistry.plugin = this;
 		TimersRegistry.persistTimerData = true;		
 		
-		ResetItem reset1 = new ResetItem("ted");
+		RepeatingResetAction reset1 = new RepeatingResetAction("ted");
 		reset1.area.setNE(ne1);
 		reset1.area.setSW(sw1);
 		reset1.area.pvpMode = PVPMode.ON;

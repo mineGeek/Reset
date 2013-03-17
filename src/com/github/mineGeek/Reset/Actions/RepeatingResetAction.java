@@ -13,7 +13,7 @@ import com.github.mineGeek.Reset.Events.TimerEventsComplete;
 import com.github.mineGeek.Reset.Structs.IAction;
 import com.github.mineGeek.Timers.Structs.Timers;
 
-public class ResetItem extends Timers implements IAction {
+public class RepeatingResetAction extends Timers implements IAction {
 
 
 
@@ -23,7 +23,7 @@ public class ResetItem extends Timers implements IAction {
 	public List<IAction> preActions = new ArrayList<IAction>();
 	public List<IAction> postActions = new ArrayList<IAction>();
 	
-	public ResetItem(String tag) {
+	public RepeatingResetAction(String tag) {
 		super(tag);
 	}	
 	
@@ -51,6 +51,7 @@ public class ResetItem extends Timers implements IAction {
 	public void complete( Object[] args ) {
 		for ( IAction a : preActions ) a.start(args);
 		super.stop();
+
 		Bukkit.broadcastMessage("resetting...................................");
 		start();
 		for ( IAction a : postActions ) a.complete(args);

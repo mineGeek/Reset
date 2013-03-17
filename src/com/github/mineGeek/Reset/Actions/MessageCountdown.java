@@ -39,14 +39,11 @@ public class MessageCountdown extends ActionBase {
 		
 	}
 	
-	
-	//public void addPreAction( IAction action) { action.setClock( this ); super.addPreAction(action);}
-	
+		
 	@Override
 	public void ini() {
 		queueMessages();
 		super.ini();
-		//this.timer.completeHandler = new TimerEventsComplete( this );
 	}
 	
 	
@@ -63,11 +60,7 @@ public class MessageCountdown extends ActionBase {
 	}
 
 	@Override
-	public void close() {
-		
-		
-	}
-
+	public void close() {}
 
 	
 	

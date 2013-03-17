@@ -60,6 +60,7 @@ public class Message extends ActionBase {
 		
 	}
 	
+	
 	@Override
 	public void complete( Object[] args ) {
 		if ( messages.containsKey( MessageEvent.COMPLETE ) ) Reset.getRegistry().broadCastMessageItems( messages.get( MessageEvent.COMPLETE), args);
@@ -83,6 +84,7 @@ public class Message extends ActionBase {
 		super.close();
 		clear();
 	}
+
 
 
 
